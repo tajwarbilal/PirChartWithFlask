@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block content %}
+
+
+        <!-- Page Header-->
+        <header class="masthead" style="background-image: url('static/assets/img/home-bg.jpg')">
+            <div class="container position-relative px-4 px-lg-5">
+                <div class="row gx-4 gx-lg-5 justify-content-center">
+                    <div class="col-md-10 col-lg-8 col-xl-7">
+                        <div class="site-heading">
+                            <h1>Live Tracker</h1>
+                            <span class="subheading">You Can Search the Record Against Each Tracker</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <!-- Main Content-->
+        <div class="container px-4 px-lg-5">
+            <div class="row gx-4 gx-lg-5 justify-content-center">
+                <div class="col-md-10 col-lg-8 col-xl-7">
+                    <!-- Post preview-->
+
+                      <form action="/" method="post">
+                        <div class="form-group">
+                          <label for="trackeroptions">Select Tracker</label>
+                          <select class="form-control" id="trackeroptions" name="trackeroptions">
+                              {% for i in tracker %}
+                                <option value="{{i.id}}">{{i.name}}</option>
+                              {% endfor %}
+                          </select>
+                        </div>
+                        <br>
+                        <input type="submit" value="Check Record of Tracker" class="btn btn-primary" style="margin-left:200px;">
+                      </form>
+
+                    <h1>{{ title }}</h1>
+
+                    <canvas id="chart" width="600" height="400"></canvas>
+                    <script>
+                      var pieData = [
+                        {% for item, label, colors in set %}
+                          {
+                            value: {{item}},
+                            label: "{{label}}",
+                            color : "{{colors}}"
+                          },
+                        {% endfor %}
+                      ];
+
+                      // get bar chart canvas
+                      var mychart = document.getElementById("chart").getContext("2d");
+                      steps = 10
+                      max = {{ max }}
+
+                      // draw pie chart
+                      new Chart(document.getElementById("chart").getContext("2d")).Pie(pieData);
+
+                    </script>
+
+                    <br><br>
+                </div>
+            </div>
+        </div>
+{% endblock %}
